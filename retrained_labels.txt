@@ -1,0 +1,5 @@
+candle
+chair
+cup
+lamp
+vase

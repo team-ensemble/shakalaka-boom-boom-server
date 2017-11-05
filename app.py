@@ -45,7 +45,7 @@ def upload_file():
                         os.makedirs(path)
                 file.save(os.path.join(path, filename))
                 drawing_category, confidence = classify_image(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                if confidence > 0.8:
+                if confidence > CONFIDENCE_THRESHOLD:
                     output['category'] = drawing_category
                     output['status'] = 'success'
                 else:

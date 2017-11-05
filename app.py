@@ -8,7 +8,7 @@ import gc
 
 UPLOAD_FOLDER = './images'
 SUGGESTION_FOLDER = './feedback/'
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 CONFIDENCE_THRESHOLD = 0.8
 
 app = Flask(__name__)

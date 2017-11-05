@@ -19,7 +19,7 @@ def classify_image(image_path):
         # Feed the image_data as input to the graph and get first prediction
         softmax_tensor = sess.graph.get_tensor_by_name('final_result:0')
 
-        predictions = sess.run(softmax_tensor, \
+        predictions = sess.run(softmax_tensor,
                                {'DecodeJpeg/contents:0': image_data})
 
         # Sort to show labels of first prediction in order of confidence

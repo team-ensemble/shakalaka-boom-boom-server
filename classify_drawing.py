@@ -2,6 +2,14 @@ import tensorflow as tf
 
 
 def classify_image(image_path):
+    """Return an image classification result along with it's confidence score.
+
+    Args:
+        image_path (str): Path of the image to be classified.
+
+    Returns:
+        (tuple): Top class label and it's corresponding confidence score.
+    """
     # Read in the image_data
     image_data = tf.gfile.FastGFile(image_path, 'rb').read()
 
@@ -26,7 +34,7 @@ def classify_image(image_path):
         top_k = predictions[0].argsort()[-len(predictions[0]):][::-1]
 
         high_class = ''
-        high_score = 0
+        high_score = 0.0
 
         for node_id in top_k:
             human_string = label_lines[node_id]

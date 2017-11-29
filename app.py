@@ -21,16 +21,18 @@ def hello_world():
 
 
 def allowed_file(filename):
+    """Check if the file extension is valid."""
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
+    """Return a response for drawing classification request."""
     if request.method == 'POST':
         output = {}
         try:
-            # check if the post request has the file part
+            # Check if the post request has the file part
             if 'file' not in request.files:
                 flash('No file part')
                 return "No file", 400
@@ -46,7 +48,11 @@ def upload_file():
                 if not os.path.isdir(path):
                         os.makedirs(path)
                 file.save(os.path.join(path, filename))
+
+                # Get the drawing classification result
                 drawing_category, confidence = classify_image(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+                # Send a success response only if confidence is greater than threshold
                 if confidence > CONFIDENCE_THRESHOLD:
                     output['category'] = drawing_category
                     output['status'] = 'success'
@@ -58,16 +64,19 @@ def upload_file():
             output['status'] = 'error'
             output['message'] = str(e)
 
+        # Force garbage collection to free up memory
         gc.collect()
+
         return jsonify(output)
 
 
 @app.route('/failure_feedback', methods=['POST'])
 def failure_feedback():
+    """Store images into folder based on feedback and return a suitable response."""
     if request.method == 'POST':
         output = {}
         try:
-            # check if the post request has the file part
+            # Check if the post request has the file part
             if 'file' not in request.files:
                 flash('No file part')
                 return "No file", 400
@@ -83,13 +92,17 @@ def failure_feedback():
                 path = app.config['SUGGESTION_FOLDER'] + suggested_category
                 if not os.path.isdir(path):
                         os.makedirs(path)
+
+                # Save the drawing into a folder with a name that of the feedback
                 file.save(os.path.join(path, filename))
+
                 output['status'] = 'success'
 
         except Exception as e:
                 output['status'] = 'error'
                 output['message'] = str(e)
 
+        # Force garbage collection to free up memory
         gc.collect()
         return jsonify(output)
 
